@@ -1,7 +1,5 @@
 # summarize-video
 
-> **Stop Scrubbing, Start Summarizing – a 5‑Minute Bun CLI for Video TL;DRs**
-
 Summarize any `.mp4` video using Gemini 2.5 Pro, right from your terminal. Get a markdown summary with timestamps and a TL;DR in seconds.
 
 ---
@@ -20,8 +18,7 @@ Summarize any `.mp4` video using Gemini 2.5 Pro, right from your terminal. Get a
 | Tool                  | Install command                                               |
 | --------------------- | ------------------------------------------------------------- |
 | **Bun 1.2 +**         | `curl -fsSL https://bun.sh/install | bash`                    |
-| **Google Gen AI key** | Grab one in AI Studio → `export GEMINI_API_KEY="…"`           |
-| **FFmpeg (optional)** | If you need to trim or transcode before upload                |
+| **Google Gen AI key** | Grab one in AI Studio (https://aistudio.google.com/apikey) → `export GEMINI_API_KEY="…"`           |
 
 ---
 
@@ -33,12 +30,9 @@ cd video-summarizer
 bun install
 ```
 
-### Make it global (two choices)
+### Make it global
 
-- **Symlink way**: `bun link -g` – quickest, perfect for dev boxes
-- **Binary way**: `bun build summarize-video.ts --compile --outfile summarize-video && mv summarize-video ~/.bun/bin` – zero external deps for your students
-
-Either path gives you a shiny `summarize-video` command discoverable from anywhere.
+- **Binary way**: `bun build summarize-video.ts --compile --outfile summarize-video && mv summarize-video ~/.bun/bin` – zero external deps 
 
 ---
 
@@ -63,21 +57,6 @@ summarize-video <path/to/file.mp4> [--prompt <path/to/prompt.txt>]
 
 ---
 
-## FAQ
-
-- **How big is the binary?** ~7–8 MB on macOS arm64 (stripped)
-- **Can I switch models?** Yup – change the `model` field in the script
-- **Where’s the prompt?** Either inline (default) or via `--prompt my.txt`
-
----
-
-## Next steps / ideas
-
-- Add subtitle extraction (VTT) for higher accuracy
-- Batch mode: summarize a folder overnight
-- Publish: `bun publish` to npm for `bunx summarize-video`
-
----
 
 ## License
 MIT 

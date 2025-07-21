@@ -49,12 +49,20 @@ async function main() {
         config: { mimeType: "video/mp4" },
     });
 
+    if (!file.uri) {
+        throw new Error("No file.uri or file.name from Gemini", { cause: file });
+    }
+
+    if (!file.name) {
+        throw new Error("No file.name from Gemini", { cause: file });
+    }
+
     // Poll until the file becomes ACTIVE (max ~2 min)
     let attempts = 0;
     const maxAttempts = 60;
     while (file.state !== "ACTIVE" && attempts < maxAttempts) {
         await Bun.sleep(2_000);
-        file = await ai.files.get({ name: file.name });
+        file = await ai.files.get({ name: file.name! });
         console.log(`↻  Status check ${++attempts}/${maxAttempts}: ${file.state}`);
         if (file.state === "FAILED") {
             throw new Error(`File processing failed: ${file.error?.message ?? ""}`);
@@ -78,10 +86,13 @@ Include timestamps (MM:SS) and a TL;DR.`;
     const response = await ai.models.generateContent({
         model: "gemini-2.5-pro",
         contents: createUserContent([
-            createPartFromUri(file.uri, file.mimeType),
+            createPartFromUri(file.uri!, file.mimeType!),
             prompt,
         ]),
     });
+    if (!response.text) {
+        throw new Error("No response.text from Gemini", { cause: response });
+    }
 
     // --- 5.  Persist the markdown next to the video ---------------------------
     const outPath = p.join(
