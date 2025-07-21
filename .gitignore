@@ -1,5 +1,9 @@
 # dependencies (bun install)
-node_modules
+node_modules/
+.bun/
+*.md
+.env
+dist/
 
 # output
 out

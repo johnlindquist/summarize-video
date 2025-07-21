@@ -30,9 +30,49 @@ cd video-summarizer
 bun install
 ```
 
-### Make it global
+### Global install (recommended)
 
-- **Binary way**: `bun build summarize-video.ts --compile --outfile summarize-video && mv summarize-video ~/.bun/bin` – zero external deps 
+To make the CLI available everywhere, use:
+```bash
+bun link
+```
+This registers the package globally and makes the `summarize-video` command available from anywhere.
+
+> **Note:** `bun add --global .` has known issues with lockfile resolution for local packages. Use `bun link` instead.
+
+---
+
+### Build a standalone binary for your platform
+
+#### On Linux
+```bash
+bun run build:unix
+./summarize-video <path/to/video.mp4>
+```
+
+#### On macOS (Intel/x64)
+```bash
+bun run build:mac
+./summarize-video-mac <path/to/video.mp4>
+```
+
+#### On macOS (Apple Silicon/ARM64)
+```bash
+bun run build:mac-arm
+./summarize-video-mac-arm <path/to/video.mp4>
+```
+
+#### On Windows
+```powershell
+bun run build:win
+./summarize-video.exe <path\to\video.mp4>
+```
+
+> **Note:**
+> - Bun's build system automatically makes the binary executable for your platform.
+> - The `bin` field in `package.json` points to `index.ts` for package manager installs (e.g., `bunx summarize-video`).
+> - For standalone binaries, use the appropriate build script for your OS and run the resulting binary directly.
+> - For global CLI installs, use `bun link` from your project root.
 
 ---
 
